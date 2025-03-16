@@ -30,30 +30,36 @@ const updateCoupon = async(req,res)=>{
         res.status(500).json({message:'Failed to update coupon',error})
     }
 }
-
-const claimCoupon = async(req,res)=>{
-    try {
-        const { code } = req.body;
-        if (!code) return res.status(400).json({ message: 'Coupon code is required' });
-    
-        const coupon = await Coupon.findOne({ code });
-        if (!coupon) return res.status(404).json({ message: 'Coupon not found' });
-        if (coupon.status === 'claimed') return res.status(400).json({ message: 'Coupon already claimed' });
-    
-        // Track IP or session ID
+const claimCoupon = async (req, res) => {
+  try {
+    // Check if the user already claimed in the last 60 seconds
+    if (req.cookies.claimed) {
+      return res.status(400).json({ message: 'You already claimed a coupon. Please wait 60 seconds.' });
+    }
+        // Get the user's IP
         const clientIp = getClientIp(req);
-    
-        // Claim the coupon
-        coupon.status = 'claimed';
-        coupon.claimedBy = clientIp; // Or use req.session.id for session tracking
-        coupon.claimedAt = new Date();
-        await coupon.save();
-    
-        res.json({ message: 'Coupon claimed successfully', coupon });
-      } catch (error) {
-        res.status(500).json({ message: 'Failed to claim coupon', error });
-      }
+
+    // Assign the next available coupon in sequence
+    const coupon = await Coupon.findOneAndUpdate(
+      { status: 'available' },
+      { status: 'claimed', claimedBy: clientIp, claimedAt: new Date() },
+      { new: true, sort: { _id: 1 } } // Ensures sequential assignment
+    );
+
+    if (!coupon) {
+      return res.status(404).json({ message: 'No available coupons.' });
+    }
+
+    // Set a cookie to prevent another claim for 60 seconds
+    res.cookie('claimed', 'true', { httpOnly: true, maxAge: 60 * 1000 });
+
+    res.json({ message: 'Coupon claimed successfully', coupon });
+
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to claim coupon', error });
+  }
 };
+
 
 const claimHistoryCoupon = async(req,res)=>{
     try {

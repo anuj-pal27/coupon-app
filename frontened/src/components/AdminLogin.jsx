@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 function AdminLogin() {
     const [username,setUsername] = useState('');
@@ -11,7 +12,7 @@ function AdminLogin() {
     const handleLogin = async(e)=>{
       e.preventDefault();
       try{
-        const response = await axios.post('http://localhost:8080/api/admin/login',{username,password})
+        const response = await axios.post(`${backendUrl}/api/admin/login`,{username,password})
         localStorage.setItem('token',response.data.token);
         navigate('/admin/panel');
       }catch(err){

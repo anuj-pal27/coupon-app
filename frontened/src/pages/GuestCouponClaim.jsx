@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const GuestCouponClaim = () => {
   const [message, setMessage] = useState('');
   const [coupon, setCoupon] = useState(null);
-
   const handleClaim = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/coupons/claim',{},{
-        withCredentials:true, //Ensure cookies are sent with requests
-      });
+      const response = await axios.post(`${backendUrl}/api/coupons/claims`);
       setCoupon(response.data.coupon);
       setMessage(response.data.message);
     } catch (error) {
-      setMessage(error.response?.data.message || 'You already claimed coupon');
+      setMessage(error.response?.data.message || 'You already claimed coupon wait 60 seconds');
     }
   };
 

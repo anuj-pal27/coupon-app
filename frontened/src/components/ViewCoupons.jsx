@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const ViewCoupons = () => {
   const [coupons, setCoupons] = useState([]);
@@ -9,7 +10,7 @@ const ViewCoupons = () => {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/coupons');
+        const response = await fetch(`${backendUrl}/api/coupons`);
         if (!response.ok) throw new Error('Failed to fetch coupons');
         const data = await response.json();
         setCoupons(data);

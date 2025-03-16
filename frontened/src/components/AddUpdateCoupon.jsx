@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 const AddUpdateCoupon = () => {
   const [coupons, setCoupons] = useState([]);
   const [code, setCode] = useState('');
@@ -12,7 +12,7 @@ const AddUpdateCoupon = () => {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/coupons', {
+        const response = await fetch(`${backendUrl}/api/coupons`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

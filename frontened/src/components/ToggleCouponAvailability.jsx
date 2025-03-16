@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function ToggleCouponAvailability() {
   const [coupons, setCoupons] = useState([]);
@@ -10,7 +11,7 @@ export default function ToggleCouponAvailability() {
 
   const fetchCoupons = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/coupons');
+      const response = await axios.get(`${backendUrl}/api/coupons`);
       setCoupons(response.data);
     } catch (error) {
       console.error('Failed to fetch coupons:', error);

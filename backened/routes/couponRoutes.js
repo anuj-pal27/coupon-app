@@ -8,7 +8,8 @@ router.get('/',getCoupon);
 
 // Claim a coupon (Guest Access)
 router.get('/claims',claimHistoryCoupon);
-router.post('/claims',claimLimiter,checkCookie,claimCoupon);
+
+router.post('/claims',claimLimiter,claimCoupon);
 
 // Add new coupon (Admin access)
 router.post('/',authMiddleware,newCoupon);

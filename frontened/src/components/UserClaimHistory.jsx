@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const UserClaimHistory = () => {
   const [claimedCoupons, setClaimedCoupons] = useState([]);
@@ -10,7 +10,7 @@ const UserClaimHistory = () => {
   useEffect(() => {
     const fetchClaimedCoupons = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/coupons/claims');
+        const response = await axios.get(`${backendUrl}/api/coupons/claims`);
         setClaimedCoupons(response.data);
       } catch (err) {
         setError('Failed to fetch claimed coupons');

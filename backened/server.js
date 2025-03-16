@@ -5,6 +5,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 
+const FRONTEND_URL = `${process.env.FRONTEND_URL}`
 // Import Routes
 const adminRoutes = require('./routes/adminRoutes');
 const couponRoutes = require('./routes/couponRoutes');
@@ -14,7 +15,7 @@ const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors({
-  origin:'http://localhost:5173',
+  origin:FRONTEND_URL,
   credentials:true,
 }));
 app.use(express.json());
@@ -38,4 +39,4 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));

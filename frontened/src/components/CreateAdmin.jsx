@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export default function CreateAdmin() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +10,7 @@ export default function CreateAdmin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/api/admin/create', {
+      const response = await fetch(`${backendUrl}/api/admin/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
