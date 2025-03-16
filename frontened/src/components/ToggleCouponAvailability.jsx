@@ -27,7 +27,7 @@ export default function ToggleCouponAvailability() {
     }
 
     try {
-      await axios.put(`http://localhost:8080/api/coupons/${id}/toggle`,
+      await axios.put(`${backendUrl}/api/coupons/${id}/toggle`,
         {},
         {
           headers:{
