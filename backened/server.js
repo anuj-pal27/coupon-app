@@ -5,7 +5,7 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 
-const FRONTEND_URL = `${process.env.FRONTEND_URL}`
+const FRONTEND_URL = process.env.FRONTEND_URL;
 // Import Routes
 const adminRoutes = require('./routes/adminRoutes');
 const couponRoutes = require('./routes/couponRoutes');
@@ -20,8 +20,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials:true,
 }));
-// Handle preflight requests
-app.options('*', cors());
+
 
 app.use(express.json());
 app.use(cookieParser());
