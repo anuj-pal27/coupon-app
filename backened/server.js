@@ -16,8 +16,13 @@ const PORT = process.env.PORT || 8080;
 // Middleware
 app.use(cors({
   origin:FRONTEND_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials:true,
 }));
+// Handle preflight requests
+app.options('*', cors());
+
 app.use(express.json());
 app.use(cookieParser());
 // Routes
